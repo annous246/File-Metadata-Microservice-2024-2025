@@ -8,7 +8,7 @@ var app = express();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Specify the folder where files should be saved
+    cb(null, './public'); // Specify the folder where files should be saved
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname); // Use the original file name
@@ -24,10 +24,15 @@ app.get('/', function (req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
-app.post('/api/fileanalyse',(req,res)=>{
+app.post('/api/fileanalyse',upload.single('upfile'),(req,res)=>{
   console.log("hi")
-  let inp=req.body.upfile
-  console.log(inp)
+  let name=req.file.filename
+  let type=req.file.mimetype
+  let size=req.file.size
+  console.log(name)
+  console.log(type)
+  console.log(size)
+  res.json({name:name,type:type,size:size})
   
 })
 
